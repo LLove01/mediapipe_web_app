@@ -9,6 +9,7 @@ function VideoUploadComponent() {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const requestAnimationFrameId = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         // Initialize the pose detector
@@ -25,11 +26,18 @@ function VideoUploadComponent() {
 
         pose.onResults((results) => {
             const ctx = canvasRef.current.getContext('2d');
-
-            // Ensure that landmarks are drawn on top of the current video frame
             ctx.save();
-            drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
-            drawLandmarks(ctx, results.poseLandmarks, { color: '#FF0000', lineWidth: 2 });
+            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+            // Draw the video frame first
+            ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+
+            // Then draw the pose landmarks
+            if (results.poseLandmarks) {
+                drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
+                drawLandmarks(ctx, results.poseLandmarks, { color: '#FF0000', lineWidth: 2 });
+            }
+
             ctx.restore();
         });
 
@@ -51,6 +59,15 @@ function VideoUploadComponent() {
         const pose = video.pose;
         const ctx = canvasRef.current.getContext('2d');
 
+        // Function to draw the first frame and perform pose detection
+        const drawAndDetectFirstFrame = () => {
+            if (pose) {
+                pose.send({ image: video }); // This will trigger pose.onResults to draw the frame and pose
+            } else {
+                ctx.drawImage(video, 0, 0, canvasRef.current.width, canvasRef.current.height);
+            }
+        };
+
         const renderFrame = async () => {
             if (!video.paused && !video.ended) {
                 // Draw the video frame
@@ -65,10 +82,57 @@ function VideoUploadComponent() {
         video.addEventListener('loadedmetadata', () => {
             canvasRef.current.width = video.videoWidth;
             canvasRef.current.height = video.videoHeight;
-            video.play(); // Start playing the video after it is loaded
+            video.currentTime = 0; // Seek to the start
+        });
+
+        video.addEventListener('loadeddata', () => {
+            drawAndDetectFirstFrame(); // Draw the first frame when it's available
+            video.pause(); // Ensure the video is paused after drawing the first frame
+            setIsPlaying(false); // Update the playing state
         });
 
         video.addEventListener('play', renderFrame);
+
+    };
+    const togglePlayPause = () => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        if (video.paused || video.ended) {
+            video.play();
+            setIsPlaying(true);
+        } else {
+            video.pause();
+            setIsPlaying(false);
+        }
+    };
+
+    const handleReset = () => {
+        const video = videoRef.current;
+        const pose = video.pose;
+
+        if (video) {
+            video.pause();
+            video.currentTime = 0;
+            setIsPlaying(false);
+
+            video.onseeked = async () => {
+                // Trigger pose detection for the first frame
+                if (pose) {
+                    await pose.send({ image: video });
+                }
+                video.onseeked = null; // Clear the event handler
+            };
+        }
+    };
+
+
+    // Function to remove the video and clear the canvas
+    const handleRemove = () => {
+        setVideoSrc(null);
+        setIsPlaying(false);
+        const ctx = canvasRef.current.getContext('2d');
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     };
 
 
@@ -102,11 +166,22 @@ function VideoUploadComponent() {
                     <canvas ref={canvasRef} style={{ width: '100%', height: 'auto' }}></canvas>
                 )}
             </div>
+            <div>
+                {videoSrc && (
+                    <>
+                        <button onClick={togglePlayPause}>
+                            {isPlaying ? 'Pause' : 'Play'}
+                        </button>
+                        <button onClick={handleReset}>Reset</button>
+                        <button onClick={handleRemove}>Remove</button>
+                    </>
+                )}
+            </div>
             {/* Hide the video element; it's only used to provide a source for the canvas */}
             <div style={{ display: 'none' }}>
                 <video ref={videoRef} src={videoSrc} preload="metadata"></video>
             </div>
-        </div>
+        </div >
     );
 }
 
