@@ -16,6 +16,20 @@
   overflow: hidden;
 }
 
+.joint-controls-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+  /* Add padding for better spacing */
+}
+
+.joint-controls-container div {
+  margin: 5px;
+  /* Adjust margin as needed */
+}
+
 video {
   max-width: 100%;
   max-height: 100%;
