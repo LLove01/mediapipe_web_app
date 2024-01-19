@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import CameraComponent from './CameraComponent';
+import VideoUploadComponent from './VideoComponent';
 import './App.css';
 
 function App() {
+  const [showCamera, setShowCamera] = useState(false);
+
+  const handleToggle = () => {
+    setShowCamera(!showCamera);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="toggle-switch">
+        <button onClick={handleToggle}>
+          {showCamera ? 'Switch to Video Upload' : 'Switch to Camera'}
+        </button>
+      </div>
+      {showCamera ? (
+        <CameraComponent />
+      ) : (
+        <VideoUploadComponent />
+      )}
     </div>
   );
 }

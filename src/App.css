@@ -1,38 +1,108 @@
 .App {
   text-align: center;
+  padding: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.drop-area,
+.video-container {
+  width: 640px;
+  height: 480px;
+  border: 2px dashed #ccc;
+  margin: 20px auto;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.App-link {
-  color: #61dafb;
+video {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  /* Ensure video is behind the canvas */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button {
+  margin: 10px;
+}
+
+.pose-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  /* Ensure canvas is above the video */
+}
+
+/* Slider container styles */
+.slider-container {
+  position: relative;
+  z-index: 3;
+  /* Higher than video and pose-overlay */
+  width: 640px;
+  /* Set the width to match the canvas */
+  margin: 20px auto;
+  padding: 15px 0;
+  /* Add some padding for better visibility */
+  background-color: rgba(255, 255, 255, 0.7);
+  /* Optional: for better visibility */
+}
+
+/* Slider styles */
+input[type="range"] {
+  width: 100%;
+  display: block;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 15px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+  cursor: pointer;
+  /* Makes it clear the slider is interactive */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #333;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #333;
+}
+
+/* Define the CSS for the captured frames container */
+.captured-frames-container {
+  display: flex;
+  /* Display frames in a row */
+  flex-wrap: wrap;
+  /* Allow frames to wrap to the next row if needed */
+  gap: 10px;
+  /* Gap between frames */
+  justify-content: flex-start;
+  /* Align frames to the start of the container */
+  align-items: center;
+  /* Align frames vertically in the center */
+}
+
+/* Style each individual frame (img) */
+.captured-frame {
+  max-width: 200px;
+  /* Set a maximum width for each frame */
+  max-height: 150px;
+  /* Set a maximum height for each frame */
 }
