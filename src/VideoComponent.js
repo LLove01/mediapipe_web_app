@@ -14,14 +14,24 @@ function VideoUploadComponent() {
     const [poseLandmarks, setPoseLandmarks] = useState(null);
 
     // Angle state varibles
-    const [showLeftKneeAngle, setShowLeftKneeAngle] = useState(false);
-    const [showRightKneeAngle, setShowRightKneeAngle] = useState(false);
-    const [showLeftHipAngle, setShowLeftHipAngle] = useState(false);
-    const [showRightHipAngle, setShowRightHipAngle] = useState(false);
-    const [showLeftElbowAngle, setShowLeftElbowAngle] = useState(false);
-    const [showRightElbowAngle, setShowRightElbowAngle] = useState(false);
-    const [showLeftShoulderAngle, setShowLeftShoulderAngle] = useState(false);
-    const [showRightShoulderAngle, setShowRightShoulderAngle] = useState(false);
+    // const [showLeftKneeAngle, setShowLeftKneeAngle] = useState(false);
+    // const [showRightKneeAngle, setShowRightKneeAngle] = useState(false);
+    // const [showLeftHipAngle, setShowLeftHipAngle] = useState(false);
+    // const [showRightHipAngle, setShowRightHipAngle] = useState(false);
+    // const [showLeftElbowAngle, setShowLeftElbowAngle] = useState(false);
+    // const [showRightElbowAngle, setShowRightElbowAngle] = useState(false);
+    // const [showLeftShoulderAngle, setShowLeftShoulderAngle] = useState(false);
+    // const [showRightShoulderAngle, setShowRightShoulderAngle] = useState(false);
+
+    const showLeftKneeAngle = useRef(false);
+    const showRightKneeAngle = useRef(false);
+    const showLeftHipAngle = useRef(false);
+    const showRightHipAngle = useRef(false);
+    const showLeftShoulderAngle = useRef(false);
+    const showRightShoulderAngle = useRef(false);
+    const showLeftElbowAngle = useRef(false);
+    const showRightElbowAngle = useRef(false);
+
     // Declare these state variables at the top with useState
     const [angleLeftKnee, setLeftKneeAngle] = useState(null);
     const [angleRightKnee, setRightKneeAngle] = useState(null);
@@ -81,7 +91,7 @@ function VideoUploadComponent() {
                 const elbow_r = results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW];
 
                 // Right Knee Angle
-                if (showRightKneeAngle && knee_r && hip_r && ankle_r) {
+                if (showRightKneeAngle.current && knee_r && hip_r && ankle_r) {
                     const calculatedRightKnee = calculateAngle(hip_r, knee_r, ankle_r);
                     setRightKneeAngle(calculatedRightKnee);
                     const kneeX = knee_r.x * canvasRef.current.width;
@@ -91,7 +101,7 @@ function VideoUploadComponent() {
                     ctx.fillText(`${Math.round(calculatedRightKnee)}°`, kneeX, kneeY);
                 }
                 // Left Knee Angle
-                if (showLeftKneeAngle && knee_l && hip_l && ankle_l) {
+                if (showLeftKneeAngle.current && knee_l && hip_l && ankle_l) {
                     const calculatedLeftKnee = calculateAngle(hip_l, knee_l, ankle_l);
                     setLeftKneeAngle(calculatedLeftKnee);
                     const kneeX = knee_l.x * canvasRef.current.width;
@@ -102,7 +112,7 @@ function VideoUploadComponent() {
                 }
 
                 // Left Hip Angle
-                if (showLeftHipAngle && hip_l && shoulder_l && knee_l) {
+                if (showLeftHipAngle.current && hip_l && shoulder_l && knee_l) {
                     const calculatedAngle = calculateAngle(shoulder_l, hip_l, knee_l);
                     setLeftHipAngle(calculatedAngle);
                     const hipX = hip_l.x * canvasRef.current.width;
@@ -113,7 +123,7 @@ function VideoUploadComponent() {
                 }
 
                 // Right Hip Angle
-                if (showRightHipAngle && hip_r && shoulder_r && knee_r) {
+                if (showRightHipAngle.current && hip_r && shoulder_r && knee_r) {
                     const calculatedAngle = calculateAngle(shoulder_r, hip_r, knee_r);
                     setRightHipAngle(calculatedAngle);
                     const hipX = hip_r.x * canvasRef.current.width;
@@ -124,7 +134,7 @@ function VideoUploadComponent() {
                 }
 
                 // Left Shoulder Angle
-                if (showLeftShoulderAngle && shoulder_l && hip_l && elbow_l) {
+                if (showLeftShoulderAngle.current && shoulder_l && hip_l && elbow_l) {
                     const calculatedAngle = calculateAngle(hip_l, shoulder_l, elbow_l);
                     setLeftShoulderAngle(calculatedAngle);
                     const shoulderX = shoulder_l.x * canvasRef.current.width;
@@ -135,7 +145,7 @@ function VideoUploadComponent() {
                 }
 
                 // Right Shoulder Angle
-                if (showRightShoulderAngle && shoulder_r && hip_r && elbow_r) {
+                if (showRightShoulderAngle.current && shoulder_r && hip_r && elbow_r) {
                     const calculatedAngle = calculateAngle(hip_r, shoulder_r, elbow_r);
                     setRightShoulderAngle(calculatedAngle);
                     const shoulderX = shoulder_r.x * canvasRef.current.width;
@@ -147,7 +157,7 @@ function VideoUploadComponent() {
 
 
                 // Left Elbow Angle
-                if (showLeftElbowAngle && elbow_l && shoulder_l && wrist_l) {
+                if (showLeftElbowAngle.current && elbow_l && shoulder_l && wrist_l) {
                     const calculatedAngle = calculateAngle(shoulder_l, elbow_l, wrist_l);
                     setLeftElbowAngle(calculatedAngle);
                     const elbowX = elbow_l.x * canvasRef.current.width;
@@ -158,7 +168,7 @@ function VideoUploadComponent() {
                 }
 
                 // Right Elbow Angle
-                if (showRightElbowAngle && elbow_r && shoulder_r && wrist_r) {
+                if (showRightElbowAngle.current && elbow_r && shoulder_r && wrist_r) {
                     const calculatedAngle = calculateAngle(shoulder_r, elbow_r, wrist_r);
                     setRightElbowAngle(calculatedAngle);
                     const elbowX = elbow_r.x * canvasRef.current.width;
@@ -174,7 +184,7 @@ function VideoUploadComponent() {
         });
 
         videoRef.current.pose = pose;
-    }, [showLeftKneeAngle, angleLeftKnee, showRightKneeAngle, angleRightKnee, showLeftHipAngle, angleLeftHip, showRightHipAngle, angleRightHip, showLeftShoulderAngle, angleLeftShoulder, showRightShoulderAngle, angleRightShoulder, showLeftElbowAngle, angleLeftElbow, showRightElbowAngle, angleRightElbow]);
+    }, []);
 
 
 
@@ -204,6 +214,9 @@ function VideoUploadComponent() {
                 ctx.drawImage(video, 0, 0, canvasRef.current.width, canvasRef.current.height);
                 await pose.send({ image: video });
                 requestAnimationFrame(renderFrame);
+
+
+
             }
         };
 
@@ -255,12 +268,16 @@ function VideoUploadComponent() {
     };
 
 
-    // Function to remove the video and clear the canvas
     const handleRemove = () => {
         setVideoSrc(null);
         setIsPlaying(false);
         const ctx = canvasRef.current.getContext('2d');
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+        // Reset the file input
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
 
@@ -277,28 +294,38 @@ function VideoUploadComponent() {
     }, [videoSrc]);
 
 
+    const [refresh, setRefresh] = useState(false);
+
+    const toggleShowAngle = (angleRef) => {
+        angleRef.current = !angleRef.current;
+        setRefresh(prev => !prev); // Toggle the refresh state to force re-render
+    };
+
     const joints = [
-        { name: "Left Knee", showAngle: showLeftKneeAngle, setShowAngle: setShowLeftKneeAngle },
-        { name: "Right Knee", showAngle: showRightKneeAngle, setShowAngle: setShowRightKneeAngle },
-        { name: "Left Hip", showAngle: showLeftHipAngle, setShowAngle: setShowLeftHipAngle },
-        { name: "Right Hip", showAngle: showRightHipAngle, setShowAngle: setShowRightHipAngle },
-        { name: "Left Elbow", showAngle: showLeftElbowAngle, setShowAngle: setShowLeftElbowAngle },
-        { name: "Right Elbow", showAngle: showRightElbowAngle, setShowAngle: setShowRightElbowAngle },
-        { name: "Left Shoulder", showAngle: showLeftShoulderAngle, setShowAngle: setShowLeftShoulderAngle },
-        { name: "Right Shoulder", showAngle: showRightShoulderAngle, setShowAngle: setShowRightShoulderAngle }
+        { name: "Left Knee", ref: showLeftKneeAngle, toggle: () => toggleShowAngle(showLeftKneeAngle) },
+        { name: "Right Knee", ref: showRightKneeAngle, toggle: () => toggleShowAngle(showRightKneeAngle) },
+        { name: "Left Hip", ref: showLeftHipAngle, toggle: () => toggleShowAngle(showLeftHipAngle) },
+        { name: "Right Hip", ref: showRightHipAngle, toggle: () => toggleShowAngle(showRightHipAngle) },
+        { name: "Left Shoulder", ref: showLeftShoulderAngle, toggle: () => toggleShowAngle(showLeftShoulderAngle) },
+        { name: "Right Shoulder", ref: showRightShoulderAngle, toggle: () => toggleShowAngle(showRightShoulderAngle) },
+        { name: "Left Elbow", ref: showLeftElbowAngle, toggle: () => toggleShowAngle(showLeftElbowAngle) },
+        { name: "Right Elbow", ref: showRightElbowAngle, toggle: () => toggleShowAngle(showRightElbowAngle) }
+
     ];
 
-    const jointAngleControls = joints.map(joint => (
-        <div key={joint.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '5px' }}>
-            <span>{joint.name}</span>
-            <button onClick={() => {
-                joint.setShowAngle(!joint.showAngle);
-                console.log(`${joint.name} Angle Visibility: `, !joint.showAngle); // Log on button click
-            }}>
-                {joint.showAngle ? 'Hide Angle' : 'Show Angle'}
-            </button>
-        </div>
-    ));
+    const jointAngleControls = joints.map((joint, index) => {
+        // Determine the current state of the angle visibility for each joint
+        const isAngleVisible = joint.ref.current;
+
+        return (
+            <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '5px' }}>
+                <span>{joint.name}</span>
+                <button onClick={joint.toggle}>
+                    {isAngleVisible ? 'Hide Angle' : 'Show Angle'}
+                </button>
+            </div>
+        );
+    });
 
 
     return (
