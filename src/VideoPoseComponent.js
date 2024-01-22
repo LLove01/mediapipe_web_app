@@ -4,7 +4,7 @@ import { Pose, POSE_CONNECTIONS } from '@mediapipe/pose';
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { calculateAngle, POSE_LANDMARKS } from './poseUtils';
 
-function VideoUploadComponent() {
+function VideoPoseComponent() {
     const [videoSrc, setVideoSrc] = useState(null);
     const fileInputRef = useRef(null);
     const videoRef = useRef(null);
@@ -370,4 +370,4 @@ function VideoUploadComponent() {
     );
 }
 
-export default VideoUploadComponent;
+export default VideoPoseComponent;
