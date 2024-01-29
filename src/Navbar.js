@@ -1,11 +1,10 @@
+import logo from './assets/TPhead.png';
+
 const Navbar = () => {
     return (
         <nav className="navbar">
-            <img
-                src="/assets/TPhead.png"
-                alt="Training Point Logo"
-                className="logo"
-            />
+            <img src={logo} alt="Training Point Logo" className="logo" />
+
             <div className="links">
                 <a href="/">Sign Up</a>
                 <a href="/create" style={{

@@ -22,7 +22,6 @@ body {
   position: relative;
   overflow: hidden;
   background-color: #1A2B3C;
-  background-image: 'assets/cam.png';
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

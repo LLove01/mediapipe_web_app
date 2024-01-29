@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Pose, POSE_CONNECTIONS } from '@mediapipe/pose';
 import { Camera } from '@mediapipe/camera_utils';
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
+import camImage from './assets/cam.png';
 
 function CameraPoseComponent() {
     const [cameraActive, setCameraActive] = useState(false);
@@ -96,7 +97,7 @@ function CameraPoseComponent() {
             <button onClick={toggleCamera} className="camera-toggle-button">
                 {cameraActive ? 'Turn Off Camera' : 'Turn On Camera'}
             </button>
-            <div className="video-container">
+            <div className="video-container" style={{ backgroundImage: `url(${camImage})` }}>
                 <video ref={videoRef} className="input-video" autoPlay playsInline style={{ display: 'block' }} />
                 <canvas ref={canvasRef} className="pose-overlay output-canvas" />
             </div>

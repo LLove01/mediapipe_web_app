@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import { FileDrop } from 'react-file-drop';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import '@tensorflow/tfjs';
+import camImage from './assets/cam.png';
+
 
 function VideoObjectComponent() {
     const [videoSrc, setVideoSrc] = useState(null);
@@ -114,7 +116,10 @@ function VideoObjectComponent() {
 
     return (
         <div>
-            <div className="drop-area">
+            <div
+                className="drop-area"
+                style={{ backgroundImage: `url(${camImage})` }}
+            >
                 {!videoSrc && (
                     <FileDrop onDrop={handleVideoUpload} onTargetClick={() => fileInputRef.current.click()}>
                         Drop your video here or click to upload

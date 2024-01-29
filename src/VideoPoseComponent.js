@@ -3,6 +3,7 @@ import { FileDrop } from 'react-file-drop';
 import { Pose, POSE_CONNECTIONS } from '@mediapipe/pose';
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { calculateAngle, POSE_LANDMARKS } from './poseUtils';
+import camImage from './assets/cam.png';
 
 function VideoPoseComponent() {
     const [videoSrc, setVideoSrc] = useState(null);
@@ -73,8 +74,18 @@ function VideoPoseComponent() {
             ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
 
             if (results.poseLandmarks) {
-                drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
-                drawLandmarks(ctx, results.poseLandmarks, { color: '#FF0000', lineWidth: 2 });
+                // Filter out head landmarks and draw the rest
+                const headLandmarkIndices = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+                // Filter out connections that involve head landmarks
+                const filteredConnections = POSE_CONNECTIONS.filter(connection =>
+                    !headLandmarkIndices.has(connection[0]) && !headLandmarkIndices.has(connection[1])
+                );
+                const filteredLandmarks = results.poseLandmarks.filter((_, index) => !headLandmarkIndices.has(index));
+
+                // Draw filtered connections and all landmarks
+                drawConnectors(ctx, results.poseLandmarks, filteredConnections, { color: '#00FF00', lineWidth: 0.5 });
+                drawLandmarks(ctx, filteredLandmarks, { color: '#FF0000', lineWidth: 1 });
 
                 // Define necessary keypoints
                 const knee_l = results.poseLandmarks[POSE_LANDMARKS.LEFT_KNEE];
@@ -330,7 +341,10 @@ function VideoPoseComponent() {
 
     return (
         <div>
-            <div className="drop-area">
+            <div
+                className="drop-area"
+                style={{ backgroundImage: `url(${camImage})` }}
+            >
                 {!videoSrc && (
                     <FileDrop onDrop={handleVideoUpload} onTargetClick={() => fileInputRef.current.click()}>
                         Drop your video here or click to upload

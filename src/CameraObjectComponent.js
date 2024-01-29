@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import '@tensorflow/tfjs';
 import { Camera } from '@mediapipe/camera_utils';
+import camImage from './assets/cam.png';
 
 function CameraObjectComponent() {
     const [cameraActive, setCameraActive] = useState(false);
@@ -77,7 +78,7 @@ function CameraObjectComponent() {
             <button onClick={toggleCamera} className="camera-toggle-button">
                 {cameraActive ? 'Turn Off Camera' : 'Turn On Camera'}
             </button>
-            <div className="video-container">
+            <div className="video-container" style={{ backgroundImage: `url(${camImage})` }}>
                 <video ref={videoRef} className="input-video" autoPlay playsInline style={{ display: 'block' }} />
                 <canvas ref={canvasRef} className="pose-overlay output-canvas" />
             </div>
