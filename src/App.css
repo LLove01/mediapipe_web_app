@@ -1,19 +1,31 @@
 .App {
   text-align: center;
-  padding: 20px;
+  padding: 00px;
+}
+
+body {
+  background-color: #1A2B3C;
 }
 
 .drop-area,
 .video-container {
   width: 640px;
-  height: 480px;
-  border: 2px dashed #ccc;
+  height: 640px;
+
+  box-shadow: inset 0 0 5px #3498db;
   margin: 20px auto;
   display: flex;
   justify-content: center;
-  align-items: center;
+  border-radius: 20px;
+  align-items: top;
+  padding-top: 0px;
   position: relative;
   overflow: hidden;
+  background-color: #1A2B3C;
+  background-image: 'assets/cam.png';
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .joint-controls-container {
@@ -45,11 +57,16 @@ video {
 
 button {
   margin: 10px;
+  color: whitesmoke;
+  background-color: #1EB980;
+  border-radius: 8px;
+  height: 30px;
 }
 
 .pose-overlay {
   position: absolute;
-  top: 0;
+  top: 20;
+  padding-top: 75px;
   left: 0;
   z-index: 2;
   /* Ensure canvas is above the video */
@@ -119,4 +136,83 @@ input[type="range"]::-moz-range-thumb {
   /* Set a maximum width for each frame */
   max-height: 150px;
   /* Set a maximum height for each frame */
+}
+
+/* base styles */
+* {
+  margin: 0;
+  color: #FBFBFB;
+}
+
+.navbar {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  width: 95%;
+  margin: 0 auto;
+  border-bottom: 0px solid #f2f2f2;
+}
+
+.navbar h1 {
+  color: #FBFBFB;
+}
+
+.navbar .links {
+  margin-left: auto;
+}
+
+.navbar a {
+  margin-left: 16px;
+  text-decoration: none;
+  padding: 6px;
+}
+
+.navbar a:hover {
+  color: #1EB980
+}
+
+/* Example with fixed dimensions */
+.logo {
+  height: 60px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+.camera-toggle-button {
+  display: inline-block;
+  margin-right: 10px;
+  /* Adjust the margin as needed */
+}
+
+.input-video,
+.output-canvas {
+  display: inline-block;
+}
+
+.human-body {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin: 20px;
+}
+
+.joint {
+  width: 60px;
+  height: 60px;
+  background-color: #ddd;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.joint:hover {
+  background-color: #ccc;
+}
+
+.selected {
+  background-color: #3498db;
+  color: #fff;
 }

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import CameraComponent from './CameraComponent';
+import CameraObjectComponent from './CameraObjectComponent';
+import CameraPoseComponent from './CameraPoseComponent';
 import VideoPoseComponent from './VideoPoseComponent';
 import VideoObjectComponent from './VideoObjectComponent';
+import Navbar from './Navbar';
 import './App.css';
 
 function App() {
@@ -18,25 +20,24 @@ function App() {
 
   return (
     <div className="App">
+      <Navbar />
       <div className="toggle-switch">
         <button onClick={handleToggleCamera}>
           {showCamera ? 'Switch to Video Upload' : 'Switch to Camera'}
         </button>
-        {!showCamera && (
-          <button onClick={handleToggleDetection}>
-            {showPose ? 'Switch to Object Detection' : 'Switch to Pose Detection'}
-          </button>
-        )}
+        {/* This button is now outside the condition for showCamera */}
+        <button onClick={handleToggleDetection}>
+          {showPose ? 'Switch to Object Detection' : 'Switch to Pose Detection'}
+        </button>
       </div>
       {showCamera ? (
-        <CameraComponent />
-      ) : showPose ? (
-        <VideoPoseComponent />
+        showPose ? <CameraPoseComponent /> : <CameraObjectComponent />
       ) : (
-        <VideoObjectComponent />
+        showPose ? <VideoPoseComponent /> : <VideoObjectComponent />
       )}
     </div>
   );
 }
+
 
 export default App;
